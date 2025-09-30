@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  postgres-db:
+    image: postgres:latest
+    env_file: ./.env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres:${DB_VOLUME_URL}
+    ports:
+      - ${DB_LOCAL_PORT}:${DB_DOCKER_PORT}
+volumes:
+  postgres:

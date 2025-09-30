@@ -1,0 +1,153 @@
+<div class="dialogContainer">
+  <div class="modalHeader">
+    <div class="avatarDetails">
+      <label class="hoverable">
+        <img [src]="url ? url : advanceTable.img" alt="image">
+        <div class="hover-text">Upload</div>
+        <div class="background"></div>
+      </label>
+      <input id="tableFileInput" type='file' (change)="onSelectFile($event)">
+      <div class="modalTitle">
+        {{dialogTitle}}
+      </div>
+    </div>
+    <button mat-icon-button mat-dialog-close class="modal-close-button" aria-label="Close dialog" type="button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div mat-dialog-content>
+    <form class="form-field-full" [formGroup]="advanceTableForm" (ngSubmit)="submit()">
+      <div class="row m-b-25">
+        <div class="col-sm-6">
+          <mat-form-field class="example-full-width" appearance="outline" subscriptSizing="dynamic">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName">
+            <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>face</mat-icon>
+            @if (advanceTableForm.get('firstName')?.hasError('required')) {
+            <mat-error>
+              First Name is required
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="col-sm-6">
+          <mat-form-field class="example-full-width" appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName">
+            <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>face</mat-icon>
+            @if (advanceTableForm.get('lastName')?.hasError('required')) {
+            <mat-error>
+              Last Name is required
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row m-b-25">
+        <div class="col-sm-12">
+          <mat-label class="msr-3">Gender:</mat-label>
+          <mat-radio-group aria-label="Select gender" formControlName="gender" required>
+            <mat-radio-button value="Male" color="primary">Male</mat-radio-button>
+            <mat-radio-button value="Female" color="primary">Female</mat-radio-button>
+            @if (advanceTableForm.get('gender')?.hasError('required')) {
+            <mat-error>
+              Select gender
+            </mat-error>
+            }
+          </mat-radio-group>
+        </div>
+      </div>
+      <div class="row m-b-25">
+        <div class="col-sm-6">
+          <mat-form-field class="example-full-width" appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" required>
+            <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>email</mat-icon>
+            @if (advanceTableForm.get('email')?.hasError('required') || advanceTableForm.get('email')?.touched) {
+            <mat-error>
+              Please enter a valid email address
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="col-sm-6">
+          <mat-form-field class="example-full-width" appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Birth date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="birthDate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            @if (advanceTableForm.get('birthDate')?.hasError('required')) {
+            <mat-error>
+              Please select date
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row m-b-25">
+        <div class="col-sm-6">
+          <mat-form-field class="example-full-width" appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Mobile</mat-label>
+            <input matInput formControlName="mobile" type="number">
+            <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>phone</mat-icon>
+            @if (advanceTableForm.get('mobile')?.hasError('required')) {
+            <mat-error>
+              Mobile is required
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="col-sm-6">
+          <mat-form-field class="example-full-width " appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Country</mat-label>
+            <mat-select formControlName="country" required>
+              <mat-option [value]="'india'">
+                India
+              </mat-option>
+              <mat-option [value]="'usa'">
+                USA
+              </mat-option>
+              <mat-option [value]="'france'">
+                France
+              </mat-option>
+              <mat-option [value]="'germany'">
+                Germany
+              </mat-option>
+              <mat-option [value]="'spain'">
+                Spain
+              </mat-option>
+              <mat-option [value]="'turkey'">
+                Turkey
+              </mat-option>
+              <mat-option [value]="'other'">
+                Other
+              </mat-option>
+            </mat-select>
+            @if (advanceTableForm.get('country')?.hasError('required')) {
+            <mat-error>
+              Country Name is required
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row m-b-25">
+        <div class="col-sm-12">
+          <mat-form-field class="example-full-width" appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Address</mat-label>
+            <textarea matInput formControlName="address"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row m-b-25">
+        <div class="col-sm-12">
+          <div class="example-button-row">
+            <button mat-flat-button class="formSubmitBtn" [disabled]="!advanceTableForm.valid"
+              type="submit">Save</button>
+            <button mat-flat-button mat-dialog-close class="formCancelBtn" tabindex="-1">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

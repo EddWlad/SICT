@@ -1,0 +1,28 @@
+{
+  "routes": [
+    {
+      "path": "",
+      "title": "MENUITEMS.MAIN.TEXT",
+      "icon": "",
+      "class": "",
+      "groupTitle": true,
+      "submenu": []
+    },
+    {
+      "path": "advance-table",
+      "title": "MENUITEMS.ADVANCE-TABLE.TEXT",
+      "icon": "trello",
+      "class": "",
+      "groupTitle": false,
+      "submenu": []
+    },
+    {
+      "path": "",
+      "title": "-- Pages",
+      "icon": "",
+      "class": "",
+      "groupTitle": true,
+      "submenu": []
+    }
+  ]
+}
