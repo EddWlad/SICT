@@ -46,6 +46,8 @@ export class SidebarComponent
   listMaxHeight?: string;
   listMaxWidth?: string;
   headerHeight = 60;
+  isLoggedIn = false;
+  userFullName?: string;
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2,
@@ -86,17 +88,38 @@ export class SidebarComponent
     }
   }
   ngOnInit() {
-    if (this.authService.currentUserValue) {
-      this.subs.sink = this.sidebarService
-        .getRouteInfo()
-        .subscribe((routes: RouteInfo[]) => {
-          this.sidebarItems = routes.filter((sidebarItem) => sidebarItem);
-        });
-    }
+    // 1) validar sesión por cookie contra backend
+    this.subs.sink = this.authService.showUserInfo().subscribe({
+      next: (info: any) => {
+        this.isLoggedIn = true;
+        this.userFullName = info?.fullName;
+
+        // 2) cargar menú una vez confirmada la sesión
+        this.loadMenu();
+      },
+      error: () => {
+        this.isLoggedIn = false;
+        this.userFullName = undefined;
+
+        // Si quieres, podrías limpiar el menú aquí:
+        this.sidebarItems = [];
+      }
+    });
 
     this.initLeftSidebar();
     this.bodyTag = this.document.body;
   }
+
+    // ---- carga de items del menú ----
+  private loadMenu(): void {
+    this.subs.sink = this.sidebarService
+      .getRouteInfo()
+      .subscribe((routes: RouteInfo[]) => {
+        // Si luego filtras por permisos, hazlo aquí
+        this.sidebarItems = routes.filter((sidebarItem) => sidebarItem);
+      });
+  }
+
   initLeftSidebar() {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const _this = this;

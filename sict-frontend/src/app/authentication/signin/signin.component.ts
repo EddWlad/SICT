@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from '@core';
-import { UnsubscribeOnDestroyAdapter } from '@shared';
+import { Validators, FormsModule, ReactiveFormsModule, FormGroup, FormBuilder } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { NgClass } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { finalize } from 'rxjs';
+import { AuthService } from '@core/service/auth.service';
 @Component({
     selector: 'app-signin',
     templateUrl: './signin.component.html',
@@ -21,59 +21,56 @@ import { MatIconModule } from '@angular/material/icon';
         MatButtonModule,
     ]
 })
-export class SigninComponent
-  extends UnsubscribeOnDestroyAdapter
-  implements OnInit
-{
-  loginForm!: UntypedFormGroup;
+export class SigninComponent {
+  loginForm: FormGroup;
+  loading = false;
+  error: string | null = null;
   submitted = false;
-  error = '';
-  hide = true;
+
   constructor(
-    private formBuilder: UntypedFormBuilder,
-    private router: Router,
-    private authService: AuthService
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
   ) {
-    super();
-  }
-  ngOnInit() {
-    this.loginForm = this.formBuilder.group({
-      email: [
-        'admin@lorax.com',
-        [Validators.required, Validators.email, Validators.minLength(5)],
-      ],
-      password: ['admin', Validators.required],
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]]
     });
   }
 
-  get form(): { [key: string]: AbstractControl } {
+  
+  get form() {
     return this.loginForm.controls;
   }
-  onSubmit() {
-    this.submitted = true;
-    this.error = '';
+
+  onSubmit(): void {
+    this.error = null;
+    this.submitted = true;  
+
     if (this.loginForm.invalid) {
-      this.error = 'Username and Password not valid !';
+      this.loginForm.markAllAsTouched();
       return;
-    } else {
-      this.subs.sink = this.authService
-        .login(this.form['email'].value, this.form['password'].value)
-        .subscribe(
-          (res) => {
-            if (res) {
-              const token = this.authService.currentUserValue.token;
-              if (token) {
-                this.router.navigate(['/advance-table']);
-              }
-            } else {
-              this.error = 'Invalid Login';
-            }
-          },
-          (error) => {
-            this.error = error;
-            this.submitted = false;
-          }
-        );
     }
+
+    const email = this.loginForm.get('email')?.value;
+    const password = this.loginForm.get('password')?.value;
+
+    this.loading = true;
+
+    this.authService.login(email, password) // debe hacer POST /login con { withCredentials: true }
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe({
+        next: () => {
+          // Opcional: precargar info de usuario (cookie ya viene del backend)
+          // this.authService.showUserInfo().subscribe(); // si quieres guardar algo en memoria
+
+          // Redirige a tu ruta de inicio (ajusta según tu app)
+          this.router.navigate(['/advance-table']);
+        },
+        error: (err) => {
+          // Muestra mensaje en la UI del template (sin cambiar HTML)
+          this.error = (err?.error?.message) ? err.error.message : 'Credenciales inválidas';
+        }
+      });
   }
 }

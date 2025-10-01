@@ -1,13 +1,43 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { tap, mapTo} from 'rxjs';
 import { User } from '../models/user';
+import { environment } from 'environments/environment.development';
+import { Router } from '@angular/router';
+
+interface ILoginRequest {
+  email: string;
+  password: string;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private currentUserSubject: BehaviorSubject<User>;
+  private url: string = `${environment.HOST}/login`;
+  private http = inject(HttpClient);
+  private router = inject(Router);
+
+  // ✅ IMPORTANTE: withCredentials para que el navegador guarde la cookie de sesión
+  login(email: string, password: string) {
+    const body: ILoginRequest = { email, password };
+    return this.http.post<any>(this.url, body, { withCredentials: true });
+  }
+
+  showUserInfo() {
+    return this.http.get<{ fullName: string }>(`${environment.HOST}/auth/user`, { withCredentials: true });
+  }
+
+// ✅ ahora devuelve Observable<void> (no se suscribe adentro)
+  logout() {
+    return this.http
+      .get(`${environment.HOST}/auth/logout`, { withCredentials: true })
+      .pipe(
+        tap(() => this.router.navigate(['/authentication/signin'])),
+        mapTo(void 0)
+      );
+  }
+  /*private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
 
   private users = [
@@ -68,5 +98,5 @@ export class AuthService {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(this.currentUserValue);
     return of({ success: false });
-  }
+  }*/
 }

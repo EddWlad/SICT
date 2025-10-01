@@ -186,9 +186,12 @@ export class HeaderComponent
     }
   }
   logout() {
-    this.subs.sink = this.authService.logout().subscribe((res) => {
-      if (!res.success) {
-        this.router.navigate(['/authentication/signin']);
+    this.subs.sink = this.authService.logout().subscribe({
+      next: () => {
+    // opcional: limpiar estado local del header, cerrar menús, etc.
+      },
+      error: () => {
+    // opcional: mostrar toast / log
       }
     });
   }
