@@ -16,11 +16,23 @@ import java.util.UUID;
 public class CommProfileServiceImpl extends GenericServiceImpl<CommProfile, UUID> implements ICommProfileService {
 
     private final ICommProfileRepository commProfileRepository;
-    private final ITrafficRegulatorRepository regulatorRepository;
 
 
     @Override
     protected IGenericRepository<CommProfile, UUID> getRepo() {
         return commProfileRepository;
+    }
+
+    @Override
+    public List<CommProfile> findByRegulator(UUID idTrafficRegulator) throws Exception{
+
+        return commProfileRepository
+                .findByTrafficRegulator_IdTrafficRegulatorAndStatusNot(idTrafficRegulator, 0);
+    }
+
+    @Override
+    public boolean existsActiveForRegulator(UUID idTrafficRegulator) throws Exception{
+        return commProfileRepository
+                .existsByTrafficRegulator_IdTrafficRegulatorAndStatus(idTrafficRegulator, 1);
     }
 }

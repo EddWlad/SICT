@@ -16,7 +16,16 @@ public abstract class GenericServiceImpl<T, ID> implements IGenericService<T, ID
 
     @Override
     public T findById(ID id) throws Exception {
-        return getRepo().findById(id).orElseThrow(() -> new ModelNotFoundException("ID NOT FOUND: " + id));
+        T entity = getRepo().findById(id).orElseThrow(() -> new ModelNotFoundException("ID NOT FOUND: " + id));
+        try {
+            Integer status = (Integer) entity.getClass().getMethod("getStatus").invoke(entity);
+            if (status == 0) {
+                throw new ModelNotFoundException("ID NOT FOUND: " + id);
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException("Error processing status field: " + e.getMessage());
+        }
+        return entity;
     }
 
     @Override
@@ -38,13 +47,13 @@ public abstract class GenericServiceImpl<T, ID> implements IGenericService<T, ID
     }
 
     @Override
-    public boolean delete(ID id) {
+    public boolean delete(ID id) throws Exception{
         T entity = getRepo().findById(id)
                 .orElseThrow(() -> new ModelNotFoundException("ID NOT FOUND: " + id));
         try {
             Integer status = (Integer) entity.getClass().getMethod("getStatus").invoke(entity);
             if (status == 0) {
-                throw new ModelNotFoundException("ID NOT FOUND OR INACTIVE: " + id);
+                throw new ModelNotFoundException("ID NOT FOUND: " + id);
             }
             entity.getClass().getMethod("setStatus", Integer.class).invoke(entity, 0);
         } catch (Exception e) {

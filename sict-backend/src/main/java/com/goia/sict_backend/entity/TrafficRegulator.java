@@ -27,6 +27,7 @@ public class TrafficRegulator {
     private UUID idTrafficRegulator;
 
     @CreationTimestamp
+    @Column(name = "traffic_regulator_date_create", updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime trafficRegulatorDateCreate;
 

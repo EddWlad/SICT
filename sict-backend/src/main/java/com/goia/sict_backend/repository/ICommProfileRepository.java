@@ -8,9 +8,7 @@ import java.util.UUID;
 
 public interface ICommProfileRepository extends IGenericRepository<CommProfile, UUID>{
 
-    //List<CommProfile> findByTrafficRegulator_IdTrafficRegulatorAndCommProfileStatusNot(UUID idTrafficRegulator, Integer status);
+    List<CommProfile> findByTrafficRegulator_IdTrafficRegulatorAndStatusNot(UUID idTrafficRegulator, Integer status);
 
-    //Optional<CommProfile> findFirstByTrafficRegulator_IdTrafficRegulatorAndCommProfileStatusNotOrderByCommProfileDateUpdateDesc(UUID idTrafficRegulator, Integer status);
-
-    //boolean existsByTrafficRegulator_IdTrafficRegulatorAndCommProfileStatus(UUID idTrafficRegulator, Integer status);
+    boolean existsByTrafficRegulator_IdTrafficRegulatorAndStatus(UUID idTrafficRegulator, Integer status);
 }

@@ -5,6 +5,8 @@ import com.goia.sict_backend.entity.Role;
 import com.goia.sict_backend.service.IRoleService;
 import com.goia.sict_backend.util.MapperUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -60,5 +62,12 @@ public class RoleController {
     public ResponseEntity<Void> delete(@PathVariable("id") String id) throws Exception {
         roleService.delete(UUID.fromString(id));
         return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("@authorizeLogic.hasAccess('pageable')")
+    @GetMapping("/pageable")
+    public ResponseEntity<Page<Role>> listPage(Pageable pageable) throws Exception {
+        Page<Role> page = roleService.listPage(pageable);
+        return ResponseEntity.ok(page);
     }
 }

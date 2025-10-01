@@ -15,7 +15,7 @@ public class AuthorizeLogic {
         String methodRole = switch (path){
             case "findAll", "findById", "save", "update", "delete",
                  "findUserDetail", "findActiveAdmins", "findActiveOperators" -> "ROLE_ADMINISTRADOR";
-            case "findByUserTasks", "updateTask", "deleteTask" -> "ROLE_OPERADOR,ROLE_ADMINISTRADOR";
+            case "findByUserTasks", "updateTask", "deleteTask", "pageable" -> "ROLE_OPERADOR,ROLE_ADMINISTRADOR";
             default -> "ROLE_SUPER_USUARIO";
         };
 

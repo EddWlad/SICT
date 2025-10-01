@@ -102,6 +102,7 @@ public class CommProfile {
     private Integer commProfileOverallTimeoutMs;
 
     @CreationTimestamp
+    @Column(name = "comm_profile_date_create", updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime commProfileDateCreate;
 
