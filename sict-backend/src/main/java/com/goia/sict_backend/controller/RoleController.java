@@ -38,7 +38,7 @@ public class RoleController {
 
     @PreAuthorize("@authorizeLogic.hasAccess('save')")
     @PostMapping
-    public ResponseEntity<Void> save(@RequestBody RoleDTO roleDTO) throws Exception {
+    public ResponseEntity<RoleDTO> save(@RequestBody RoleDTO roleDTO) throws Exception {
         Role obj = roleService.save(mapperUtil.map(roleDTO, Role.class));
 
         URI location = ServletUriComponentsBuilder
@@ -47,7 +47,7 @@ public class RoleController {
                 .buildAndExpand(obj.getIdRole())
                 .toUri();
 
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.ok(mapperUtil.map(obj, RoleDTO.class));
     }
 
     @PreAuthorize("@authorizeLogic.hasAccess('update')")

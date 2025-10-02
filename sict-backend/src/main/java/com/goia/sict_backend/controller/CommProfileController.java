@@ -1,9 +1,12 @@
 package com.goia.sict_backend.controller;
 
 import com.goia.sict_backend.dto.CommProfileDTO;
+import com.goia.sict_backend.dto.CommTestRequestDTO;
+import com.goia.sict_backend.dto.CommTestResultDTO;
 import com.goia.sict_backend.entity.CommProfile;
 import com.goia.sict_backend.entity.TrafficRegulator;
 import com.goia.sict_backend.service.ICommProfileService;
+import com.goia.sict_backend.service.ICommTestService;
 import com.goia.sict_backend.util.MapperUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CommProfileController {
     private final ICommProfileService commProfileService;
+    private final ICommTestService commTestService;
     private final MapperUtil mapperUtil;
 
     @GetMapping
@@ -85,5 +89,23 @@ public class CommProfileController {
     public ResponseEntity<Void> delete(@PathVariable UUID id) throws Exception {
         commProfileService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // ====== NUEVO: Probar conexión RS-232 del CommProfile ======
+    @PostMapping("/{id}/test")
+    @PreAuthorize("@authorizeLogic.hasAccess('findById')")
+    public ResponseEntity<CommTestResultDTO> testConnection(@PathVariable UUID id) throws Exception {
+        CommTestResultDTO result = commTestService.testConnection(id);
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/{id}/test-frame")
+    @PreAuthorize("@authorizeLogic.hasAccess('findById')") // o el permiso que uses
+    public ResponseEntity<CommTestResultDTO> testFrame(
+            @PathVariable UUID id,
+            @RequestBody CommTestRequestDTO req
+    ) throws Exception {
+        CommTestResultDTO result = commTestService.testFrame(id, req);
+        return ResponseEntity.ok(result);
     }
 }

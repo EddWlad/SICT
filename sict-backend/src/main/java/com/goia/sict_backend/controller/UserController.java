@@ -53,7 +53,7 @@ public class UserController {
 
     @PreAuthorize("@authorizeLogic.hasAccess('save')")
     @PostMapping
-    public ResponseEntity<Void> save(@RequestBody UserListRoleDTO dto) throws Exception{
+    public ResponseEntity<UserListRoleDTO> save(@RequestBody UserListRoleDTO dto) throws Exception{
         User obj1 = mapperUtil.map(dto.getUser(), User.class);
         List<Role> list = mapperUtil.mapList(dto.getRoles(), Role.class);
 
@@ -64,7 +64,7 @@ public class UserController {
                 .path("/{id}")
                 .buildAndExpand(obj.getIdUser())
                 .toUri();
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.ok(mapperUtil.map(obj, UserListRoleDTO.class));
     }
 
     @PreAuthorize("@authorizeLogic.hasAccess('update')")
