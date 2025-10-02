@@ -18,6 +18,13 @@ export const APP_ROUTE: Route[] = [
             (m) => m.ADVANCE_TABLE_ROUTE
           ),
       },
+      {
+        path: 'role',
+        loadChildren: () =>
+          import('./role/role.routes').then(
+            (m) => m.ROLE_ROUTE
+          ),
+      },
     ],
   },
   {

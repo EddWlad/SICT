@@ -18,11 +18,28 @@
     },
     {
       "path": "",
-      "title": "-- Pages",
+      "title": "-- Administracion",
       "icon": "",
       "class": "",
       "groupTitle": true,
       "submenu": []
+    },
+    {
+      "path": "",
+      "title": "User",
+      "icon": "users",
+      "class": "menu-toggle",
+      "groupTitle": false,
+      "submenu":[
+        {
+          "path": "role",
+          "title": "Roles List",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": "false",
+          "submenu": []
+        }
+      ]
     }
   ]
 }

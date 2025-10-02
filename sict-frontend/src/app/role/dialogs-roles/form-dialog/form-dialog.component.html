@@ -1,0 +1,65 @@
+<div class="dialogContainer">
+  <div class="modalHeader">
+    <div class="avatarDetails">
+      <div class="modalTitle">
+        {{dialogTitle}}
+      </div>
+    </div>
+    <button mat-icon-button mat-dialog-close class="modal-close-button" aria-label="Close dialog" type="button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div mat-dialog-content>
+    <form class="form-field-full" [formGroup]="roleForm" (ngSubmit)="submit()">
+      <div class="row m-b-25">
+        <div class="col-sm-6">
+          <mat-form-field class="example-full-width" appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name">
+            <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>work</mat-icon>
+            @if (roleForm.get('name')?.hasError('required')) {
+            <mat-error>
+              Name role is required
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="col-sm-6">
+          <mat-form-field class="example-full-width" appearance="outline" subscriptSizing="dynamic">
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="description">
+            <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>description</mat-icon>
+            @if (roleForm.get('description')?.hasError('required')) {
+            <mat-error>
+              Description is required
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+<div class="row m-b-25">
+        <div class="col-sm-6">
+          <mat-label class="msr-3">Status:</mat-label>
+          <mat-radio-group aria-label="Select Status" formControlName="status" required>
+            <mat-radio-button [value]= 1 color="primary">Active</mat-radio-button>
+            <mat-radio-button [value]= 2 color="primary">Inactive</mat-radio-button>
+            @if (roleForm.get('status')?.hasError('required')) {
+            <mat-error>
+              Select Status
+            </mat-error>
+            }
+          </mat-radio-group>
+        </div>
+      </div>
+      <div class="row m-b-25">
+        <div class="col-sm-12">
+          <div class="example-button-row">
+            <button mat-flat-button class="formSubmitBtn" [disabled]="!roleForm.valid"
+              type="submit">Save</button>
+            <button mat-flat-button mat-dialog-close class="formCancelBtn" tabindex="-1">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
