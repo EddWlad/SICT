@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { tap, mapTo} from 'rxjs';
-import { User } from '../models/user';
 import { environment } from 'environments/environment.development';
 import { Router } from '@angular/router';
 

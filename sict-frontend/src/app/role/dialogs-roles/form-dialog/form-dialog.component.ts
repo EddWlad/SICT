@@ -21,7 +21,6 @@ import {
   MatNativeDateModule,
   MatOptionModule,
 } from '@angular/material/core';
-import { formatDate } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatRadioModule } from '@angular/material/radio';
@@ -118,7 +117,7 @@ export class FormDialogComponent {
           },
         });
       } else {
-        this.roleService.save(formData).subscribe({
+        this.roleService.add(formData).subscribe({
           next: (response) => {
             this.dialogRef.close(response);
           },

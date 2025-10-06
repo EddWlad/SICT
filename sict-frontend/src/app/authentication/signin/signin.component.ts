@@ -65,7 +65,7 @@ export class SigninComponent {
           // this.authService.showUserInfo().subscribe(); // si quieres guardar algo en memoria
 
           // Redirige a tu ruta de inicio (ajusta según tu app)
-          this.router.navigate(['/role']);
+          this.router.navigate(['/user']);
         },
         error: (err) => {
           // Muestra mensaje en la UI del template (sin cambiar HTML)

@@ -25,6 +25,13 @@ export const APP_ROUTE: Route[] = [
             (m) => m.ROLE_ROUTE
           ),
       },
+      {
+        path: 'user',
+        loadChildren: () =>
+          import('./user/user.routes').then(
+            (m) => m.USER_ROUTE
+          ),
+      },
     ],
   },
   {

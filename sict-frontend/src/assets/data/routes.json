@@ -32,6 +32,14 @@
       "groupTitle": false,
       "submenu":[
         {
+          "path": "user",
+          "title": "Users List",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": "false",
+          "submenu": []
+        },
+        {
           "path": "role",
           "title": "Roles List",
           "icon": "",

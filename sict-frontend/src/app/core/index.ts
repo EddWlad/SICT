@@ -7,5 +7,4 @@ export { WINDOW } from './service/window.service';
 
 // models
 
-export { User } from './models/user';
 export { InConfiguration } from './models/config.interface';
