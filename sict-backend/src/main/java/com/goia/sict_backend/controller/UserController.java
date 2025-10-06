@@ -69,13 +69,13 @@ public class UserController {
 
     @PreAuthorize("@authorizeLogic.hasAccess('update')")
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> update(@PathVariable("id") String id, @RequestBody UserListRoleDTO dto) throws Exception{
+    public ResponseEntity<UserListRoleDTO> update(@PathVariable("id") String id, @RequestBody UserListRoleDTO dto) throws Exception{
         User user = mapperUtil.map(dto.getUser(), User.class);
         List<Role> roles = mapperUtil.mapList(dto.getRoles(), Role.class);
 
         User obj = userService.updateTransactional(UUID.fromString(id), user, roles);
 
-        return ResponseEntity.ok(mapperUtil.map(obj, UserDTO.class));
+        return ResponseEntity.ok(mapperUtil.map(obj, UserListRoleDTO.class));
     }
 
     @PreAuthorize("@authorizeLogic.hasAccess('delete')")
